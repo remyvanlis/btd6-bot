@@ -88,7 +88,7 @@ class Game:
 
                         actionParser.do_action_from_string(instruction)
 
-                if int(currentRound) > 0:
+                if isinstance(currentRound, str) and len(currentRound) > 0 and int(currentRound) > 0:
                     self.console.progress_bar(int(currentRound), 100)
 
             sleep(1)
