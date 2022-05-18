@@ -138,17 +138,17 @@ class Game:
             image: Image = self.screen_grab([1509, 30, 90, 45])
             text: str = tesser.image_to_string(image, config=f"-c tessedit_char_whitelist=0123456789/ --psm 6", nice=1)
             text = ''.join([c for c in text if c in "0123456789/"])
+            if len(text) > 0:
+                if self.map["rules"]["waves"]:
+                    if (int(text) > self.map["rules"]["waves"]):
+                        text = text[:2]
 
-            if self.map["rules"]["waves"]:
-                if (int(text) > self.map["rules"]["waves"]):
-                    text = text[:2]
-
-                if int(text) > self.previousRound:
-                    print(f"{text, self.map['rules']['waves']}")
-                    self.previousRound = text
-                    return [text, self.map['rules']['waves']]
-                else:
-                    return [self.previousRound, self.map['rules']['waves']]
+                    if int(text) > self.previousRound:
+                        print(f"{text, self.map['rules']['waves']}")
+                        self.previousRound = int(text)
+                        return [text, self.map['rules']['waves']]
+                    else:
+                        return [self.previousRound, self.map['rules']['waves']]
 
         else :
             image: Image = self.screen_grab(self.settings["game"]["roundCounter"])
