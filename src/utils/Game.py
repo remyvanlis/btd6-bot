@@ -88,7 +88,8 @@ class Game:
 
                         actionParser.do_action_from_string(instruction)
 
-                self.console.progress_bar(int(currentRound), 100)
+                if len(currentRound) > 0:
+                    self.console.progress_bar(int(currentRound), 100)
 
             sleep(1)
 
@@ -149,6 +150,8 @@ class Game:
                         return [text, self.map['rules']['waves']]
                     else:
                         return [self.previousRound, self.map['rules']['waves']]
+            else:
+                return [self.previousRound, self.map['rules']['waves']]
 
         else :
             image: Image = self.screen_grab(self.settings["game"]["roundCounter"])
