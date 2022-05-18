@@ -79,7 +79,7 @@ class Game:
                     instructions: list[str] = self.map["instructions"][currentRound]
 
                     for instruction in instructions:
-                        if instruction == "restart":
+                        if instruction == "restart" or instruction == "restart_after_freeplay":
                             restartInst: bool = True
                             break
 
@@ -91,9 +91,10 @@ class Game:
                 if isinstance(currentRound, str) and len(currentRound) > 0 and int(currentRound) > 0:
                     self.console.progress_bar(int(currentRound), 100)
 
-            sleep(1)
-
-        return self.restart_game()
+        if self.isFreeplay:
+            return self.restart_after_freeplay()
+        else:
+            return self.restart_game()
 
     def start_freeplay(self):
         while "VICTORY" not in (result := (self.get_text(True), self.get_text(False))) and \
@@ -110,6 +111,25 @@ class Game:
         sleep(1)
         pydirectinput.press("space")
         self.isFreeplay = True
+
+    def restart_after_freeplay(self) -> bool:
+        while "INSTA" not in (result := (self.get_text(False, True), self.get_text(False))) and \
+                "GAME OVER" not in result:
+            sleep(5)
+        pygui.click()
+        pygui.click()
+        sleep(2)
+        pygui.click()
+        sleep(0.25)
+        pydirectinput.press('esc')
+        sleep(1)
+        pygui.moveTo(self.settings["game"]["restartGame"])
+        pygui.click()
+        sleep(1)
+        pygui.moveTo(self.settings["game"]["confirm"])
+        pygui.click()
+        sleep(1)
+        return "INSTA" in result
 
     def restart_game(self) -> bool:
         while "VICTORY" not in (result := (self.get_text(True), self.get_text(False))) and \
@@ -165,9 +185,15 @@ class Game:
             return text.split('/') if text != '' else []
 
 
-    def get_text(self, victory: bool = True) -> str:
+    def get_text(self, victory: bool = True, instaMonkey: bool = False) -> str:
         if victory:
             image: Image = self.screen_grab(self.settings["game"]["victoryBanner"], "gold")
+        elif instaMonkey:
+            image: Image = self.screen_grab([763, 658, 430, 70], "yellow")
+            text: str = tesser.image_to_string(image, config="--psm 6", nice=1)
+            text = ''.join([c for c in text.upper() if c in "INSTA-MONKEY!"])
+
+            return text;
         else:
             image: Image = self.screen_grab(self.settings["game"]["defeatBanner"], "red")
         text: str = tesser.image_to_string(image, config="--psm 6", nice=1)

@@ -233,7 +233,7 @@
       "upgrade helipilot2 4-2-0"
     ],
     "100": [
-      "restart"
+      "restart_after_freeplay"
     ]
   }
 }
