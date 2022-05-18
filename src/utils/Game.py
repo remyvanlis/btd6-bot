@@ -36,6 +36,7 @@ class Game:
         self.console: Console = console
         self.towers: dict = {}
         self.make_towers()
+        self.isFreeplay = False
 
     def make_towers(self) -> dict:
         self.towers: dict = {}
@@ -64,22 +65,49 @@ class Game:
         while restartInst == False:
             currentRounds = self.get_round()
             Console.currentTime = round(time.time() * 1000)
+
             if round(time.time() * 1000) - currentTime > 60000:
                 currentTime = round(time.time() * 1000)
                 self.leveled_up_probably()
+
             if currentRounds != [] and currRound != currentRounds[0]:
                 currentTime = round(time.time() * 1000)
                 currentRound = currRound = currentRounds[0]
+
                 if currentRound in self.map["instructions"]:
                     instructions: list[str] = self.map["instructions"][currentRound]
+
                     for instruction in instructions:
                         if instruction == "restart":
                             restartInst: bool = True
                             break
+
+                        if instruction == "freeplay":
+                            self.start_freeplay()
+
                         actionParser.do_action_from_string(instruction)
-                self.console.progress_bar(int(currentRound), int(currentRounds[1]))
+
+                self.console.progress_bar(int(currentRound), 100)
+
             sleep(1)
+
         return self.restart_game()
+
+    def start_freeplay(self):
+        while "VICTORY" not in (result := (self.get_text(True), self.get_text(False))) and \
+                "GAME OVER" not in result:
+            sleep(5)
+        pygui.moveTo(self.settings["game"]["nextButton"])
+        pygui.click()
+        sleep(0.25)
+        pygui.moveTo(self.settings["game"]["freeplay"])
+        pygui.click()
+        sleep(2)
+        pygui.moveTo(self.settings["game"]["confirm"])
+        pygui.click()
+        sleep(1)
+        pydirectinput.press("space")
+        self.isFreeplay = True
 
     def restart_game(self) -> bool:
         while "VICTORY" not in (result := (self.get_text(True), self.get_text(False))) and \
@@ -105,10 +133,26 @@ class Game:
 
     ### GET ROUND USING PYTESSERACT ###
     def get_round(self) -> str:
-        image: Image = self.screen_grab(self.settings["game"]["roundCounter"])
-        text: str = tesser.image_to_string(image, config=f"-c tessedit_char_whitelist=0123456789/ --psm 6", nice=1)
-        text = ''.join([c for c in text if c in "0123456789/"])
-        return text.split('/') if text != '' else []
+        if self.isFreeplay:
+            image: Image = self.screen_grab([1509, 30, 90, 45])
+            text: str = tesser.image_to_string(image, config=f"-c tessedit_char_whitelist=0123456789/ --psm 6", nice=1)
+            text = ''.join([c for c in text if c in "0123456789/"])
+
+            if self.map["rules"]["waves"]:
+                print(f"{text, self.map['rules']['waves']}")
+                return [text, self.map['rules']['waves']]
+
+        else :
+            image: Image = self.screen_grab(self.settings["game"]["roundCounter"])
+            text: str = tesser.image_to_string(image, config=f"-c tessedit_char_whitelist=0123456789/ --psm 6", nice=1)
+            text = ''.join([c for c in text if c in "0123456789/"])
+            if self.map["rules"]["waves"]:
+                print(f"{[text.split('/')[0], self.map['rules']['waves']]}")
+
+                return [text.split('/')[0], self.map["rules"]["waves"]]
+
+            return text.split('/') if text != '' else []
+
 
     def get_text(self, victory: bool = True) -> str:
         if victory:

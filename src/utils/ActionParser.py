@@ -34,6 +34,15 @@ class ActionParser:
             self.move_mouse(stringArray[1], stringArray[2], click=False)
         elif stringArray[0] == "sleep":
             sleep(float(stringArray[1]))
+        elif stringArray[0] == "target":
+            pygui.moveTo(self.find_tower(stringArray[1])["coords"])
+            pygui.click()
+            self.change_target(int(stringArray[2]))
+            sleep(0.25)
+            pygui.moveTo(1920/2, 1080/2)
+            pygui.click()
+        elif stringArray[0] == "freeplay":
+            sleep(0.25)
         else:
             raise ValueError(f"Unknown instruction \"{stringArray[0]}\"")
 
@@ -85,6 +94,11 @@ class ActionParser:
         for arg in argv:
             pydirectinput.press(arg)
             sleep(0.25)
+
+    def change_target(self, amount: int):
+        for x in range(0, amount):
+            pydirectinput.press('tab')
+            sleep(0.15)
 
     def move_mouse(self, position: tuple[float], click: Optional[bool] = False):
         pygui.moveTo(position)
