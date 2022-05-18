@@ -37,6 +37,7 @@ class Game:
         self.towers: dict = {}
         self.make_towers()
         self.isFreeplay = False
+        self.previousRound = 0
 
     def make_towers(self) -> dict:
         self.towers: dict = {}
@@ -139,8 +140,15 @@ class Game:
             text = ''.join([c for c in text if c in "0123456789/"])
 
             if self.map["rules"]["waves"]:
-                print(f"{text, self.map['rules']['waves']}")
-                return [text, self.map['rules']['waves']]
+                if (int(text) > self.map["rules"]["waves"]):
+                    text = text[:2]
+
+                if int(text) > self.previousRound:
+                    print(f"{text, self.map['rules']['waves']}")
+                    self.previousRound = text
+                    return [text, self.map['rules']['waves']]
+                else:
+                    return [self.previousRound, self.map['rules']['waves']]
 
         else :
             image: Image = self.screen_grab(self.settings["game"]["roundCounter"])

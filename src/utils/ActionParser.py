@@ -35,11 +35,10 @@ class ActionParser:
         elif stringArray[0] == "sleep":
             sleep(float(stringArray[1]))
         elif stringArray[0] == "target":
-            pygui.moveTo(self.find_tower(stringArray[1])["coords"])
+            pygui.moveTo(self.find_tower(stringArray[1]).coords)
             pygui.click()
             self.change_target(int(stringArray[2]))
-            sleep(0.25)
-            pygui.moveTo(1920/2, 1080/2)
+            pygui.moveTo(self.find_tower(stringArray[1]).coords)
             pygui.click()
         elif stringArray[0] == "freeplay":
             sleep(0.25)
