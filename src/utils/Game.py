@@ -177,10 +177,10 @@ class Game:
             image: Image = self.screen_grab(self.settings["game"]["roundCounter"])
             text: str = tesser.image_to_string(image, config=f"-c tessedit_char_whitelist=0123456789/ --psm 6", nice=1)
             text = ''.join([c for c in text if c in "0123456789/"])
-            if self.map["rules"]["waves"]:
-                print(f"{[text.split('/')[0], self.map['rules']['waves']]}")
-
-                return [text.split('/')[0], self.map["rules"]["waves"]]
+            if "rules" in self.map and "waves" in self.map["rules"]:
+                if self.map["rules"]["waves"]:
+                    print(f"{[text.split('/')[0], self.map['rules']['waves']]}")
+                    return [text.split('/')[0], self.map["rules"]["waves"]]
 
             return text.split('/') if text != '' else []
 
