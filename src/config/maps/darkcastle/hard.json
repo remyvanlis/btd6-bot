@@ -91,16 +91,16 @@
       ],
       "name": "Dartling Gunner"
     },
-    "monkeyace": {
+    "bombshooter": {
       "hotkey": "v",
       "coords": [
-        850,
-        862
+        820,
+        405
       ],
-      "name": "Monkey Ace"
+      "name": "Bomb Shooter"
     },
     "alchemist": {
-      "hotkey": "f",
+      "hotkey": "y",
       "coords": [
         914,
         664
@@ -110,7 +110,7 @@
     "spikefactory": {
       "hotkey": "j",
       "coords": [
-        936,
+        960,
         410
       ],
       "name": "Spike Factory"
@@ -118,7 +118,7 @@
     "supermonkey": {
       "hotkey": "s",
       "coords": [
-        752,
+        720,
         390
       ],
       "name": "Super Monkey"
@@ -199,15 +199,12 @@
       "upgrade dartlinggunner 0-2-4",
       "target dartlinggunner 2"
     ],
-    "70": [
+    "63": [
+      "place bombshooter",
+      "upgrade bombshooter 4-2-0"
+    ],
+    "72": [
       "upgrade wizardmonkey 5-0-2"
-    ],
-    "73": [
-      "place monkeyace",
-      "upgrade monkeyace 2-0-3"
-    ],
-    "78": [
-      "upgrade monkeyace 2-0-4"
     ],
     "79": [
       "place alchemist",

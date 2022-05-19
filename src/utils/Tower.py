@@ -45,11 +45,11 @@ class Tower:
 
     def place(self):
         pygui.moveTo(self.__coords)
-        sleep(0.1)
-        sleep(0.1)
+        sleep(0.2)
         pydirectinput.press(self.__hotkey)
+        sleep(0.2)
         pygui.click()
-        sleep(0.1)
+        sleep(0.2)
         self.deselect()
         return self
 
