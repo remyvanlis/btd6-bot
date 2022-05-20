@@ -16,7 +16,6 @@ class ActionParser:
 
     def do_action_from_string(self, string: str):
         stringArray = [str(s).lower() for s in string.split(' ')]
-        print(stringArray[0])
         if stringArray[0] == "start":
             self.press_keys(self.settings["game"]["startHotkey"], self.settings["game"]["startHotkey"])
         elif stringArray[0] == "place":

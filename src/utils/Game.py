@@ -78,7 +78,11 @@ class Game:
                 if currentRound in self.map["instructions"]:
                     instructions: list[str] = self.map["instructions"][currentRound]
 
+                    self.console.welcome_screen()
+                    self.console.show_stats()
                     for instruction in instructions:
+                        self.console.print_time_of_last_action(instruction)
+
                         if instruction == "restart" or instruction == "restart_after_freeplay":
                             restartInst: bool = True
                             break
