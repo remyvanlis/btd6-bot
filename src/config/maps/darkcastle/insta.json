@@ -1,5 +1,6 @@
 {
   "rules": {
+    "gamemode": "easy",
     "waves": 100
   },
   "towers": {
@@ -100,7 +101,7 @@
       "name": "Bomb Shooter"
     },
     "alchemist": {
-      "hotkey": "y",
+      "hotkey": "f",
       "coords": [
         914,
         664

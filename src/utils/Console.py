@@ -23,7 +23,7 @@ class Console:
     def __init__(self):
         self.__wins: int = 0
         self.__loss: int = 0
-        self.__gamesPlayed: int = 0
+        self.__gamesPlayed: int
         self.__levelsGained: int = 0
         self.__startTime: int = round(time.time() * 1000)
         self.__currentTime: int = round(time.time() * 1000)
@@ -61,33 +61,23 @@ class Console:
     def loss(self, value: int):
         self.__loss = value
 
-    @property
-    def gamesPlayed(self) -> int:
-        return self.__gamesPlayed
-
-    @gamesPlayed.setter
-    def gamesPlayed(self, value: int):
-        self.__gamesPlayed = value
-
     def clear_screen(self):
         system("cls" if name == "nt" else "printf \"\033c\"")
 
     def welcome_screen(self):
         self.clear_screen()
-
-        print(f"{termColor.BLUE} ____ _______ _____    __    ____   ____ _______ \n|  _ \__   __|  __ \  / /   |  _ \ / __ \__   __|\n| |_) | | |  | |  | |/ /_   | |_) | |  | | | |   \n|  _ <  | |  | |  | | '_ \  |  _ <| |  | | | |   \n| |_) | | |  | |__| | (_) | | |_) | |__| | | |   \n|____/  |_|  |_____/ \___/  |____/ \____/  |_|")
-
-        print(f"\n{termColor.DEFAULT}BTD6 Auto Play. Created by Team Jazzmoon | Use Ctrl + C to quit the script\n{self.screen_bar()}")
+        print(f"{termColor.PURPLE}               (                             \n   (    *   ) )\ )  (        (           )  \n ( )\ ` )  /((()/(  )\ )   ( )\       ( /(  \n )((_) ( )(_))/(_))(()/(   )((_)  (   )\()) \n((_)_ (_(_())(_))_  /(_)) ((_)_   )\ (_))/  \n | _ )|_   _| |   \(_) /   | _ ) ((_)| |_   \n | _ \  | |   | |) |/ _ \  | _ \/ _ \|  _|  \n |___/  |_|   |___/ \___/  |___/\___/ \__|  \n")
+        print(f"\n{termColor.RED}BTD6 Bot. Created by Remy van Lis\n{self.screen_bar()}")
 
     def print_string(self, string: str):
-        self.print_new_lines(1)
+        self.print_new_lines()
         print(f"{string}")
 
     def print_time_of_last_action(self, string: str):
         print(f"[{str(datetime.timedelta(milliseconds=round(time.time() * 1000))).split(' ')[2].split('.')[0]}] Action: {string}")
 
     def show_stats(self):
-        print(f"Wins: {termColor.GREEN}{self.wins}\n{termColor.DEFAULT}Losses: {termColor.RED}{self.loss}\n{termColor.DEFAULT}Games Played: {termColor.YELLOW}{self.gamesPlayed}\nLevels gained: {termColor.YELLOW}{self.levels_gained}\nRunning for: {termColor.YELLOW}{(self.currentTime - self.__startTime) / 1000}s\n{self.screen_bar()}")
+        print(f"Wins: {termColor.GREEN}{self.wins}\n{termColor.DEFAULT}Losses: {termColor.RED}{self.loss}\n{termColor.DEFAULT}Games Played: {termColor.YELLOW}{self.__wins + self.__loss}\nLevels gained: {termColor.YELLOW}{self.levels_gained}\nRunning for: {termColor.YELLOW}{(self.currentTime - self.__startTime) / 1000}s\n{self.screen_bar()}")
 
     def game_logs_below(self):
         print("Current Game Logs:")

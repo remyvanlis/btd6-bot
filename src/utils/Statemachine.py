@@ -59,6 +59,20 @@ class Statemachine:
 
         return text if len(str(text)) > 0 else None
 
+    def check_game_over_freeplay(self):
+        image: Image = Screen.screen_grab([595, 140, 725, 117], "red")
+        text: str = tesser.image_to_string(image, config=f"-c tessedit_char_whitelist=0123456789/ --psm 6", nice=1)
+        text = ''.join([c for c in text if c in "GAME OVER"])
+
+        return True if len(text) > 0 else False
+
+    def check_current_money(self):
+        image: Image = Screen.screen_grab([345, 23, 133, 43])
+        text: str = tesser.image_to_string(image, config=f"-c tessedit_char_whitelist=0123456789/ --psm 6", nice=1)
+        text = ''.join([c for c in text if c in "0123456789"])
+
+        return text if len(str(text)) > 0 else None
+
     def check_current_state(self):
         if self.check_victory_state():
             return GameState.VICTORY
@@ -70,6 +84,8 @@ class Statemachine:
             return GameState.INSTA
         if self.check_leveled_up_state():
             return GameState.LEVELUP
+        if self.check_game_over_freeplay():
+            return GameState.GAMEOVER
 
     def currend_round(self, isFreeplay: bool):
         if isFreeplay:

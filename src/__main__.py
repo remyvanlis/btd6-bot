@@ -40,7 +40,8 @@ with open(os.path.join(OS_PATH, "config/settings.json"), 'r') as json_settings:
         "levelup": False,
         "mapsettings": None,
         "isFreeplay": False,
-        "currentRound": 0
+        "currentRound": 0,
+        "gameover": False
     }
 
 
@@ -60,46 +61,74 @@ def instructions():
             info['instructionHandler'].leveled_up()
         if info["defeat"]:
             console.loss += 1
-
-        sleep(0.2)
+            info['instructionHandler'].restart_defeat()
+            info['instructionHandler'].start()
+        if info["gameover"]:
+            console.loss += 1
+            info['instructionHandler'].restart_defeat()
+            info['instructionHandler'].start()
+        if info["insta"]:
+            info['instructionHandler'].restart_after_freeplay()
+    #
+        sleep(0.5)
 
 
 def state_machine():
     while True:
         info["currentRound"] = info["statemachine"].currend_round(info["isFreeplay"])
+        is_freeplay()
 
         state = info["statemachine"].check_current_state()
         if state == GameState.PAUSED:
-            print(f"Paused script...")
+            console.print_string(f"Paused script...")
             info["paused"] = True
         else:
             info["paused"] = False
 
         if state == GameState.VICTORY:
-            print(f"Victory")
+            console.print_string(f"Victory")
             info["victory"] = True
         else:
             info["victory"] = False
 
         if state == GameState.DEFEAT:
-            print(f"Defeat")
+            console.print_string(f"Defeat")
             info["defeat"] = True
         else:
             info["defeat"] = False
 
         if state == GameState.INSTA:
-            print(f"Got insta monkey!")
+            console.print_string(f"Got insta monkey!")
             info["insta"] = True
         else:
             info["insta"] = False
 
+        if state == GameState.GAMEOVER:
+            console.print_string(f"Game over:(")
+            info["gameover"] = True
+        else:
+            info["gameover"] = False
+
         if state == GameState.LEVELUP:
-            print(f"Congratulations! You have leveled up:)")
+            console.print_string(f"Congratulations! You have leveled up:)")
             info["levelup"] = True
         else:
             info["levelup"] = False
 
-        sleep(0.2)
+
+def money_state_machine():
+    while True:
+        current_money = info["statemachine"].check_current_money()
+        if current_money:
+            info["money"] = current_money
+
+
+def is_freeplay():
+    mode = info["mapsettings"]["rules"]["gamemode"]
+    mode = 40 if mode == "easy" else 60 if mode == "medium" else 80 if mode == "chimp" else 100
+    if info["currentRound"]:
+        info["isFreeplay"] = True if mode < info["mapsettings"]["rules"]["waves"] and int(info["currentRound"]) >= int(mode) else False
+        info["waves"] = mode if not info["isFreeplay"] else info["mapsettings"]["rules"]["waves"]
 
 
 try:
@@ -121,25 +150,36 @@ try:
 
     with open(os.path.join(OS_PATH, f"config{DELIMETER}maps{DELIMETER}{mapName}{DELIMETER}{gamemode}.json"), 'r') as map_json:
         map_settings = load(map_json)
+
+    # Give the user some time to click the btd6 screen
     sleep(2)
 
-    info["mapsettings"] = map_settings
-
+    # Print information in the console
     console.welcome_screen()
     console.show_stats()
     console.print_new_lines(2)
 
+    # Create the statemachine and instruction handler
     statemachine = Statemachine(console)
     instructionHandler = InstructionHandler(settings, map_settings, console)
 
+    # Set values in the info dictionary
+    info["mapsettings"] = map_settings
     info['statemachine'] = statemachine
     info['instructionHandler'] = instructionHandler
 
+    # Check if it should be going into freeplay or not
+    is_freeplay()
+
+    # Create threads for specific tasks
     state_machine_thread = threading.Thread(target=state_machine, args=())
     instruction_thread = threading.Thread(target=instructions, args=())
+    money_state_machine_thread = threading.Thread(target=money_state_machine, args=())
 
+    # Start the threads
     state_machine_thread.start()
     instruction_thread.start()
+    money_state_machine_thread.start()
 
 
 except KeyboardInterrupt:

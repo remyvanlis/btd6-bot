@@ -7,3 +7,4 @@ class GameState(Enum):
     DEFEAT = 3
     PAUSED = 4
     LEVELUP = 5
+    GAMEOVER = 6

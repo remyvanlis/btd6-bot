@@ -1,4 +1,3 @@
-import pyautogui
 import pydirectinput
 
 from .Console import Console

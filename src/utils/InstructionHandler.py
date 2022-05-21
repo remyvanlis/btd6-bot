@@ -49,14 +49,11 @@ class InstructionHandler:
         self.restartInst: bool = False
         self.current_time: int = round(time.time() * 1000)
         self.executedInstructions = []
+        self.make_towers()
 
     def check_for_instruction(self, args):
         current_round = args["currentRound"]
         Console.currentTime = self.current_time
-
-        if round(time.time() * 1000) - self.current_time > 60000:
-            self.current_time = round(time.time() * 1000)
-            self.leveled_up()
 
         if current_round is not None:
             self.current_time = round(time.time() * 1000)
@@ -75,7 +72,10 @@ class InstructionHandler:
                         self.executedInstructions.append(instruction)
 
                         if isinstance(current_round, str) and len(current_round) > 0 and int(current_round) > 0:
-                            self.console.progress_bar(int(current_round), 100)
+                            self.console.progress_bar(int(current_round), args["waves"])
+
+            if isinstance(current_round, str) and len(current_round) > 0 and int(current_round) > 0:
+                self.console.progress_bar(int(current_round), args["waves"])
 
     def start_freeplay(self) -> bool:
         pygui.moveTo(self.settings["game"]["nextButton"])
@@ -124,5 +124,21 @@ class InstructionHandler:
         pygui.moveTo(self.settings["game"]["confirm"])
         pygui.click()
         sleep(1)
+        return True
+
+    def restart_defeat(self) -> bool:
+        pygui.moveTo([834, 815])
+        pygui.click()
+        sleep(1)
+        pygui.moveTo([1136, 729])
+        pygui.click()
+        return True
+
+    def restart_gameover(self) -> bool:
+        pygui.moveTo([961, 913])
+        pygui.click()
+        sleep(1)
+        pygui.moveTo([832, 816])
+        pygui.click()
         return True
 

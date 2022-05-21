@@ -16,7 +16,7 @@ class Tower:
         self.__hotkey: Union[str, list[str]] = mapSettings["hotkey"]
         self.__coords: Union[list[Union[int, float]],
                              tuple[Union[int, float]]] = mapSettings["coords"]
-        self.__path: tuple[int] = (0,0,0)
+        self.__path: tuple[int, int, int] = (0, 0, 0)
         self.__settings: dict = settings
 
     @property
@@ -32,7 +32,7 @@ class Tower:
         return self.__coords
 
     @property
-    def path(self) -> tuple[int]:
+    def path(self) -> tuple[int, int, int]:
         return self.__path
 
     @path.setter
@@ -73,13 +73,13 @@ class Tower:
         upgradeDiff = tuple([new - old for (new, old) in zip(newPath, self.__path)])
         for _ in range(upgradeDiff[0]):
             pydirectinput.press(self.__settings["game"]["upgradeTopPathHotkey"])
-            sleep(0.1)
+            sleep(0.2)
         for _ in range(upgradeDiff[1]):
             pydirectinput.press(self.__settings["game"]["upgradeMiddlePathHotkey"])
-            sleep(0.1)
+            sleep(0.2)
         for _ in range(upgradeDiff[2]):
             pydirectinput.press(self.__settings["game"]["upgradeBottomPathHotkey"])
-            sleep(0.1)
+            sleep(0.2)
         self.__path = newPath
         self.deselect()
         return self
