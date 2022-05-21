@@ -1,11 +1,14 @@
+import threading
 from json import load
 from time import sleep
 import os
 import argparse as ag
 import sys
 
+from utils.GameStateEnum import GameState
 from utils.Console import Console
-from utils.Game import Game
+from utils.InstructionHandler import InstructionHandler
+from utils.Statemachine import Statemachine
 
 global OS_PATH
 global DELIMETER
@@ -28,6 +31,77 @@ console = Console()
 with open(os.path.join(OS_PATH, "config/settings.json"), 'r') as json_settings:
     settings = load(json_settings)
 
+    info = {
+        "stop": False,
+        "paused": False,
+        "victory": False,
+        "defeat": False,
+        "insta": False,
+        "levelup": False,
+        "mapsettings": None,
+        "isFreeplay": False,
+        "currentRound": 0
+    }
+
+
+def instructions():
+    info['instructionHandler'].start()
+
+    while not info["stop"]:
+        if not info["paused"] and not info["victory"] and not info["defeat"] and not info["insta"] and not info["levelup"]:
+            info['instructionHandler'].check_for_instruction(info)
+        if info["victory"] and not info["isFreeplay"]:
+            console.wins += 1
+            info['instructionHandler'].restart_game()
+            info['instructionHandler'].start()
+        if info["victory"] and info["isFreeplay"]:
+            info['instructionHandler'].start_freeplay()
+        if info["levelup"]:
+            info['instructionHandler'].leveled_up()
+        if info["defeat"]:
+            console.loss += 1
+
+        sleep(0.2)
+
+
+def state_machine():
+    while True:
+        info["currentRound"] = info["statemachine"].currend_round(info["isFreeplay"])
+
+        state = info["statemachine"].check_current_state()
+        if state == GameState.PAUSED:
+            print(f"Paused script...")
+            info["paused"] = True
+        else:
+            info["paused"] = False
+
+        if state == GameState.VICTORY:
+            print(f"Victory")
+            info["victory"] = True
+        else:
+            info["victory"] = False
+
+        if state == GameState.DEFEAT:
+            print(f"Defeat")
+            info["defeat"] = True
+        else:
+            info["defeat"] = False
+
+        if state == GameState.INSTA:
+            print(f"Got insta monkey!")
+            info["insta"] = True
+        else:
+            info["insta"] = False
+
+        if state == GameState.LEVELUP:
+            print(f"Congratulations! You have leveled up:)")
+            info["levelup"] = True
+        else:
+            info["levelup"] = False
+
+        sleep(0.2)
+
+
 try:
     console.welcome_screen()
 
@@ -47,22 +121,26 @@ try:
 
     with open(os.path.join(OS_PATH, f"config{DELIMETER}maps{DELIMETER}{mapName}{DELIMETER}{gamemode}.json"), 'r') as map_json:
         map_settings = load(map_json)
-
     sleep(2)
 
-    while True:
-        console.welcome_screen()
-        console.show_stats()
-        console.print_new_lines(2)
-        game = Game(settings, map_settings, console)
+    info["mapsettings"] = map_settings
 
-        gameResult = game.start()
+    console.welcome_screen()
+    console.show_stats()
+    console.print_new_lines(2)
 
-        if gameResult == True:
-            console.wins += 1
-        else:
-            console.loss += 1
-        console.gamesPlayed += 1
+    statemachine = Statemachine(console)
+    instructionHandler = InstructionHandler(settings, map_settings, console)
+
+    info['statemachine'] = statemachine
+    info['instructionHandler'] = instructionHandler
+
+    state_machine_thread = threading.Thread(target=state_machine, args=())
+    instruction_thread = threading.Thread(target=instructions, args=())
+
+    state_machine_thread.start()
+    instruction_thread.start()
+
 
 except KeyboardInterrupt:
     exit()

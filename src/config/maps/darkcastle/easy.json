@@ -31,7 +31,6 @@
       "18": ["upgrade sub 2-0-3"],
       "28": ["upgrade sub 2-0-4"],
       "34": ["upgrade dart 0-2-2"],
-      "38": ["upgrade dart 0-2-4"],
-      "40": ["restart"]
+      "38": ["upgrade dart 0-2-4"]
     }
 }

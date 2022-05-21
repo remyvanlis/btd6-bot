@@ -84,7 +84,7 @@ class Console:
         print(f"{string}")
 
     def print_time_of_last_action(self, string: str):
-        print(f"[{str(datetime.timedelta(milliseconds=round(time.time() * 1000))).split(' ')[2]}] Action: {string}")
+        print(f"[{str(datetime.timedelta(milliseconds=round(time.time() * 1000))).split(' ')[2].split('.')[0]}] Action: {string}")
 
     def show_stats(self):
         print(f"Wins: {termColor.GREEN}{self.wins}\n{termColor.DEFAULT}Losses: {termColor.RED}{self.loss}\n{termColor.DEFAULT}Games Played: {termColor.YELLOW}{self.gamesPlayed}\nLevels gained: {termColor.YELLOW}{self.levels_gained}\nRunning for: {termColor.YELLOW}{(self.currentTime - self.__startTime) / 1000}s\n{self.screen_bar()}")
