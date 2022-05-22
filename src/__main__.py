@@ -76,9 +76,6 @@ def instructions():
 
 def state_machine():
     while True:
-        info["currentRound"] = info["statemachine"].currend_round(info["isFreeplay"])
-        is_freeplay()
-
         state = info["statemachine"].check_current_state()
         if state == GameState.PAUSED:
             console.print_string(f"Paused script...")
@@ -119,17 +116,21 @@ def state_machine():
 
 def money_state_machine():
     while True:
-        current_money = info["statemachine"].check_current_money()
-        if current_money:
-            info["money"] = current_money
+        # current_money = info["statemachine"].check_current_money()
+        # if current_money:
+        #     info["money"] = current_money
+
+        info["currentRound"] = info["statemachine"].currend_round(info["isFreeplay"])
+        is_freeplay()
 
 
 def is_freeplay():
     mode = info["mapsettings"]["rules"]["gamemode"]
     mode = 40 if mode == "easy" else 60 if mode == "medium" else 80 if mode == "chimp" else 100
     info["waves"] = mode if not info["isFreeplay"] else info["mapsettings"]["rules"]["waves"] if mode < info["mapsettings"]["rules"]["waves"] else 0
-    # if info["currentRound"] and not info["isFreeplay"]:
-    #     info["isFreeplay"] = True if mode < info["mapsettings"]["rules"]["waves"] and int(info["currentRound"]) >= int(mode) else False
+
+    if info["currentRound"] and not info["isFreeplay"]:
+        info["isFreeplay"] = True if mode < info["mapsettings"]["rules"]["waves"] and int(info["currentRound"]) >= int(mode) else False
 
 
 try:

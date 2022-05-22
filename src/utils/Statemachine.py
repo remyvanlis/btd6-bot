@@ -39,18 +39,19 @@ class Statemachine:
             return True
 
     def check_insta_state(self):
-        image: Image = Screen.screen_grab([764, 647, 389, 56], "yellow")
+        image: Image = Screen.screen_grab([770, 648, 377, 52], "yellow")
         text: str = tesser.image_to_string(image, config="--psm 6", nice=1)
         text = ''.join([c for c in text.upper() if c in "INSTA-MONKEY!"])
-        if "INSTA-MONKEY!" in text:
+        print(text)
+        if "INSTA" in text:
             return True
 
     def check_current_round_standard(self):
-        image: Image = Screen.screen_grab([1380, 30, 180, 45])
+        image: Image = Screen.screen_grab([1380, 28, 180, 45])
         text: str = tesser.image_to_string(image, config=f"-c tessedit_char_whitelist=0123456789/ --psm 6", nice=1)
         text = ''.join([c for c in text if c in "0123456789/"])
 
-        return text.split('/')[0] if len(str(text)) > 0 else None
+        return text.split('/')[0] if '/' in text else text if len(str(text)) > 0 else None
 
     def check_current_round_freeplay(self):
         image: Image = Screen.screen_grab([1483, 28, 79, 45])
@@ -63,8 +64,10 @@ class Statemachine:
         image: Image = Screen.screen_grab([595, 140, 725, 117], "red")
         text: str = tesser.image_to_string(image, config="--psm 6", nice=1)
         text = ''.join([c for c in text if c in "GAME OVER"])
+        if "GAMEOVER" in text:
+            image.show()
 
-        return True if len(text) > 0 else False
+        return True if "GAMEOVER" in text else False
 
     def check_current_money(self):
         image: Image = Screen.screen_grab([345, 23, 133, 43])
@@ -88,7 +91,8 @@ class Statemachine:
             return GameState.GAMEOVER
 
     def currend_round(self, isFreeplay: bool):
-        if isFreeplay:
-            return self.check_current_round_freeplay()
-        else:
-            return self.check_current_round_standard()
+        # if isFreeplay:
+        #     return self.check_current_round_freeplay()
+        # else:
+        #     return self.check_current_round_standard()
+        return self.check_current_round_standard()
