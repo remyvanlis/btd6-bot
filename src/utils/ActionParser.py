@@ -45,7 +45,8 @@ class ActionParser:
     def change_target(self, towerName: str, amountOfTabsRequired: str):
         pygui.moveTo(self.find_tower(towerName).coords)
         pygui.click()
-        self.change_target(int(amountOfTabsRequired))
+        for i in range(int(amountOfTabsRequired)):
+            pydirectinput.press('tab')
         pygui.moveTo(self.find_tower(towerName).coords)
         pygui.click()
 
