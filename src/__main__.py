@@ -70,6 +70,7 @@ def instructions():
             info['instructionHandler'].start()
         if info["insta"]:
             info['instructionHandler'].restart_after_freeplay()
+            info['instructionHandler'].start()
 
         sleep(0.5)
 

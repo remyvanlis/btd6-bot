@@ -87,8 +87,6 @@ class InstructionHandler:
         pygui.click()
         sleep(1)
         pydirectinput.press('space')
-        sleep(0.25)
-        pydirectinput.press('space')
         return True
 
     def restart_after_freeplay(self) -> bool:
