@@ -123,18 +123,18 @@ class InstructionHandler:
         return True
 
     def restart_defeat(self) -> bool:
-        pygui.moveTo([834, 815])
+        pygui.moveTo(self.settings["game"]["defeatNextButton"])
         pygui.click()
         sleep(1)
-        pygui.moveTo([1136, 729])
+        pygui.moveTo(self.settings["game"]["defeatRestartButton"])
         pygui.click()
         return True
 
     def restart_gameover(self) -> bool:
-        pygui.moveTo([961, 913])
+        pygui.moveTo(self.settings["game"]["gameoverNextButton"])
         pygui.click()
         sleep(1)
-        pygui.moveTo([832, 816])
+        pygui.moveTo(self.settings["game"]["gameoverRestartButton"])
         pygui.click()
         return True
 

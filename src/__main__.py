@@ -4,6 +4,7 @@ from time import sleep
 import os
 import argparse as ag
 import sys
+import time
 
 from utils.GameStateEnum import GameState
 from utils.Console import Console
@@ -80,6 +81,7 @@ def instructions():
 def state_machine():
     while True:
         state = info["statemachine"].check_current_state()
+
         if state == GameState.PAUSED:
             console.print_string(f"Paused script...")
             info["paused"] = True
@@ -116,8 +118,6 @@ def state_machine():
         else:
             info["levelup"] = False
 
-        sleep(0.1)
-
 
 def money_state_machine():
     while True:
@@ -125,7 +125,7 @@ def money_state_machine():
         # if current_money:
         #     info["money"] = current_money
 
-        info["currentRound"] = info["statemachine"].currend_round(info["isFreeplay"])
+        info["currentRound"] = info["statemachine"].check_current_round()
         is_freeplay()
 
         sleep(0.1)
@@ -177,7 +177,7 @@ try:
     info['statemachine'] = statemachine
     info['instructionHandler'] = instructionHandler
 
-    # Check if it should be going into freeplay or not
+    # Set waves and freeplay
     is_freeplay()
 
     # Create threads for specific tasks

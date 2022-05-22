@@ -14,6 +14,10 @@
         "restartGame": [1079, 850],
         "confirm": [1130, 710],
         "home": [845, 860],
+        "defeatNextButton": [834, 815],
+        "defeatRestartButton": [1136, 729],
+        "gameoverNextButton": [961, 913],
+        "gameoverRestartButton": [832, 816],
         "roundCounter": [1380, 30, 180, 45]
     },
     "progressBar": {

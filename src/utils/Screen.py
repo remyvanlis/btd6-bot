@@ -8,7 +8,7 @@ try:
     from PIL import ImageGrab, ImageOps, ImageEnhance
     use_grab: bool = True
 except Exception as e:
-    if (sys.platform == "linux"):
+    if sys.platform == "linux":
         from Xlib import display, X
         use_grab: bool = False
     else:
@@ -21,14 +21,14 @@ class Screen:
         tesser.pytesseract.tesseract_cmd = r'C:\Program Files (x86)\Tesseract-OCR\tesseract'
 
     @staticmethod
-    def screen_grab(rectangle: list[Union[float, int]], colorFilter: str = 'white'):
+    def screen_grab(rectangle: list[Union[float, int]], color_filter: str = 'white'):
         global use_grab
         x, y, width, height = rectangle
 
-        if (use_grab):
+        if use_grab:
             image = ImageGrab.grab(bbox=[x, y, x + width, y + height])
 
-            if colorFilter == "gold":
+            if color_filter == "gold":
                 image_data = image.getdata()
                 new_image_data = []
 
@@ -39,7 +39,7 @@ class Screen:
                         new_image_data.append((0, 0, 0))
                 image.putdata(new_image_data)
 
-            elif colorFilter == "red":
+            elif color_filter == "red":
                 image_data = image.getdata()
                 new_image_data = []
 
@@ -56,15 +56,11 @@ class Screen:
             image = image.point(lambda x: 0 if x < 10 else 255)
             image = image.convert('L')
         else:
-            # ImageGrab can be missing under Linux
             dsp = display.Display()
             root = dsp.screen().root
             raw_image = root.get_image(x, y, width, height, X.ZPixmap, 0xffffffff)
             image = Image.frombuffer(
                 "RGB", (width, height), raw_image.data, "raw", "BGRX", 0, 1)
 
-            # TODO: If on linux edit the image to have less noise
-        # | Debug Image
-        # image.save(f"C:\\Users\\User\\Documents\\temp.png", "PNG")
         return image
 

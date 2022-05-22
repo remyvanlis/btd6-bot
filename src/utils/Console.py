@@ -1,9 +1,10 @@
 import time
 import datetime
 
-from os import name, system, listdir, get_terminal_size
+from os import name, system, get_terminal_size
 
-class termColor:
+
+class TermColor:
     PURPLE: str = "\033[95m"
     BLUE: str = "\033[94m"
     GREEN: str = "\033[92m"
@@ -13,11 +14,13 @@ class termColor:
     BOLD: str = "\033[1m"
     UNDERLINE: str = "\033[4m"
 
-class progressBarSettings:
+
+class ProgressBarSettings:
     prefix: str = "Progress: ["
     suffix: str = "] [PERCENT]%"
     completed: str = '#'
     null: str = '-'
+
 
 class Console:
     def __init__(self):
@@ -70,42 +73,47 @@ class Console:
     def loss(self, value: int):
         self.__loss = value
 
-    def clear_screen(self):
+    @staticmethod
+    def clear_screen():
         system("cls" if name == "nt" else "printf \"\033c\"")
 
     def welcome_screen(self):
         self.clear_screen()
-        print(f"{termColor.PURPLE}               (                             \n   (    *   ) )\ )  (        (           )  \n ( )\ ` )  /((()/(  )\ )   ( )\       ( /(  \n )((_) ( )(_))/(_))(()/(   )((_)  (   )\()) \n((_)_ (_(_())(_))_  /(_)) ((_)_   )\ (_))/  \n | _ )|_   _| |   \(_) /   | _ ) ((_)| |_   \n | _ \  | |   | |) |/ _ \  | _ \/ _ \|  _|  \n |___/  |_|   |___/ \___/  |___/\___/ \__|  \n")
-        print(f"\n{termColor.RED}BTD6 Bot. Created by Remy van Lis\n{self.screen_bar()}")
+        print(f"{TermColor.PURPLE}               (                             \n   (    *   ) )\ )  (        (           )  \n ( )\ ` )  /((()/(  )\ )   ( )\       ( /(  \n )((_) ( )(_))/(_))(()/(   )((_)  (   )\()) \n((_)_ (_(_())(_))_  /(_)) ((_)_   )\ (_))/  \n | _ )|_   _| |   \(_) /   | _ ) ((_)| |_   \n | _ \  | |   | |) |/ _ \  | _ \/ _ \|  _|  \n |___/  |_|   |___/ \___/  |___/\___/ \__|  \n")
+        print(f"\n{TermColor.RED}BTD6 Bot. Created by: Remy van Lis\n{self.screen_bar()}")
 
     def print_string(self, string: str):
         self.print_new_lines()
         print(f"{string}")
 
-    def print_time_of_last_action(self, string: str):
+    @staticmethod
+    def print_time_of_last_action(string: str):
         print(f"[{str(datetime.timedelta(milliseconds=round(time.time() * 1000))).split(' ')[2].split('.')[0]}] Action: {string}")
 
     def show_stats(self):
-        print(f"Wins: {termColor.GREEN}{self.wins}\n{termColor.DEFAULT}Losses: {termColor.RED}{self.loss}\n{termColor.DEFAULT}Games Played: {termColor.YELLOW}{self.__wins + self.__loss}\nLevels gained: {termColor.YELLOW}{self.levels_gained}\nInsta monkeys gained: {termColor.YELLOW}{self.instasGained}\nRunning for: {termColor.YELLOW}{(self.currentTime - self.__startTime) / 1000}s\n{self.screen_bar()}")
+        print(f"Wins: {TermColor.GREEN}{self.wins}\n{TermColor.DEFAULT}Losses: {TermColor.RED}{self.loss}\n{TermColor.DEFAULT}Games Played: {TermColor.YELLOW}{self.__wins + self.__loss}\nLevels gained: {TermColor.YELLOW}{self.levels_gained}\nInsta monkeys gained: {TermColor.YELLOW}{self.instasGained}\nRunning for: {TermColor.YELLOW}{(self.currentTime - self.__startTime) / 1000}s\n{self.screen_bar()}")
 
-    def game_logs_below(self):
+    @staticmethod
+    def game_logs_below():
         print("Current Game Logs:")
 
-    def print_new_lines(self, amount: int = 1):
+    @staticmethod
+    def print_new_lines(amount: int = 1):
         print(("\n" * amount))
 
-
-    def progress_bar(self, completed: int, total: int):
+    @staticmethod
+    def progress_bar(completed: int, total: int):
         size = round(get_terminal_size().columns / 2)
         percentage = round((completed / total) * 100)
-        suffix = progressBarSettings.suffix.replace("[PERCENT]", str(percentage))
-        barSize = size - len(progressBarSettings.prefix) - (len(suffix))
+        suffix = ProgressBarSettings.suffix.replace("[PERCENT]", str(percentage))
+        barSize = size - len(ProgressBarSettings.prefix) - (len(suffix))
         completedBar = int(percentage / 100 * barSize)
         nullBar = barSize - completedBar
-        bar = f"{termColor.GREEN}{(progressBarSettings.completed * completedBar)}{termColor.DEFAULT}{(progressBarSettings.null * nullBar)}"
-        print(f"\r{progressBarSettings.prefix}{bar}{suffix}", end='')
+        bar = f"{TermColor.GREEN}{(ProgressBarSettings.completed * completedBar)}{TermColor.DEFAULT}{(ProgressBarSettings.null * nullBar)}"
+        print(f"\r{ProgressBarSettings.prefix}{bar}{suffix}", end='')
 
-    def screen_bar(self) -> str:
-        return termColor.PURPLE + ('-' * (round(get_terminal_size().columns) - 1)) + termColor.DEFAULT
+    @staticmethod
+    def screen_bar() -> str:
+        return TermColor.PURPLE + ('-' * (round(get_terminal_size().columns) - 1)) + TermColor.DEFAULT
 
 
