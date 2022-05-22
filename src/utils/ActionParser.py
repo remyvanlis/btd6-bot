@@ -1,4 +1,3 @@
-import pyautogui
 import pydirectinput
 
 from .Console import Console
@@ -40,8 +39,6 @@ class ActionParser:
             self.change_target(int(stringArray[2]))
             pygui.moveTo(self.find_tower(stringArray[1]).coords)
             pygui.click()
-        elif stringArray[0] == "freeplay":
-            sleep(0.25)
         else:
             raise ValueError(f"Unknown instruction \"{stringArray[0]}\"")
 
