@@ -42,7 +42,6 @@ class Statemachine:
         image: Image = Screen.screen_grab([770, 648, 377, 52], "yellow")
         text: str = tesser.image_to_string(image, config="--psm 6", nice=1)
         text = ''.join([c for c in text.upper() if c in "INSTA-MONKEY!"])
-        print(text)
         if "INSTA" in text:
             return True
 
