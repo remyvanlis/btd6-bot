@@ -93,7 +93,7 @@
       "name": "Dartling Gunner"
     },
     "bombshooter": {
-      "hotkey": "y",
+      "hotkey": "e",
       "coords": [
         820,
         405
@@ -157,17 +157,13 @@
     "38": [
       "upgrade dart 0-2-4"
     ],
-    "40": [
-      "freeplay"
-    ],
-    "41": [
+    "39": [
       "place bananafarm1",
-      "upgrade bananafarm1 2-0-3",
-      "place bananafarm2",
-      "upgrade bananafarm2 0-0-3",
-      "upgrade bananafarm2 2-0-3"
+      "upgrade bananafarm1 2-0-3"
     ],
     "42": [
+      "place bananafarm2",
+      "upgrade bananafarm2 2-0-3",
       "place wizardmonkey"
     ],
     "43": [

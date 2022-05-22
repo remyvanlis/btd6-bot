@@ -21,7 +21,6 @@ class InstructionHandler:
         self.console: Console = console
         self.towers: dict = {}
         self.make_towers()
-        self.isFreeplay = False
         self.previousRound = 0
         self.executedInstructions = []
 
@@ -86,9 +85,6 @@ class InstructionHandler:
         sleep(2)
         pygui.moveTo(self.settings["game"]["confirm"])
         pygui.click()
-        sleep(1)
-        pydirectinput.press("space")
-        self.isFreeplay = True
         return True
 
     def restart_after_freeplay(self) -> bool:

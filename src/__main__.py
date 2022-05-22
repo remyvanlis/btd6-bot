@@ -41,7 +41,8 @@ with open(os.path.join(OS_PATH, "config/settings.json"), 'r') as json_settings:
         "mapsettings": None,
         "isFreeplay": False,
         "currentRound": 0,
-        "gameover": False
+        "gameover": False,
+        "waves": 0
     }
 
 
@@ -65,11 +66,11 @@ def instructions():
             info['instructionHandler'].start()
         if info["gameover"]:
             console.loss += 1
-            info['instructionHandler'].restart_defeat()
+            info['instructionHandler'].restart_gameover()
             info['instructionHandler'].start()
         if info["insta"]:
             info['instructionHandler'].restart_after_freeplay()
-    #
+
         sleep(0.5)
 
 
@@ -126,9 +127,9 @@ def money_state_machine():
 def is_freeplay():
     mode = info["mapsettings"]["rules"]["gamemode"]
     mode = 40 if mode == "easy" else 60 if mode == "medium" else 80 if mode == "chimp" else 100
-    if info["currentRound"]:
-        info["isFreeplay"] = True if mode < info["mapsettings"]["rules"]["waves"] and int(info["currentRound"]) >= int(mode) else False
-        info["waves"] = mode if not info["isFreeplay"] else info["mapsettings"]["rules"]["waves"]
+    info["waves"] = mode if not info["isFreeplay"] else info["mapsettings"]["rules"]["waves"] if mode < info["mapsettings"]["rules"]["waves"] else 0
+    # if info["currentRound"] and not info["isFreeplay"]:
+    #     info["isFreeplay"] = True if mode < info["mapsettings"]["rules"]["waves"] and int(info["currentRound"]) >= int(mode) else False
 
 
 try:

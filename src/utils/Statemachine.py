@@ -53,15 +53,15 @@ class Statemachine:
         return text.split('/')[0] if len(str(text)) > 0 else None
 
     def check_current_round_freeplay(self):
-        image: Image = Screen.screen_grab([1464, 28, 101, 45])
-        text: str = tesser.image_to_string(image, config=f"-c tessedit_char_whitelist=0123456789/ --psm 6", nice=1)
+        image: Image = Screen.screen_grab([1483, 28, 79, 45])
+        text: str = tesser.image_to_string(image, config="--psm 6", nice=1)
         text = ''.join([c for c in text if c in "0123456789"])
 
         return text if len(str(text)) > 0 else None
 
     def check_game_over_freeplay(self):
         image: Image = Screen.screen_grab([595, 140, 725, 117], "red")
-        text: str = tesser.image_to_string(image, config=f"-c tessedit_char_whitelist=0123456789/ --psm 6", nice=1)
+        text: str = tesser.image_to_string(image, config="--psm 6", nice=1)
         text = ''.join([c for c in text if c in "GAME OVER"])
 
         return True if len(text) > 0 else False
