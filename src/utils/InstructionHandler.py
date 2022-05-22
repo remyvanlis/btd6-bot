@@ -1,7 +1,6 @@
 import time
 import pydirectinput
 import pyautogui as pygui
-import pytesseract as tesser
 
 from .Console import Console
 from .Tower import Tower
@@ -15,7 +14,6 @@ class InstructionHandler:
         self.restartInst = None
         self.curr_round = None
         self.actionParser = None
-        tesser.pytesseract.tesseract_cmd = r'C:\Program Files (x86)\Tesseract-OCR\tesseract'
         self.settings: dict = settings
         self.map: dict = map_settings
         self.console: Console = console

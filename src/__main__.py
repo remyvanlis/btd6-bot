@@ -69,10 +69,12 @@ def instructions():
             info['instructionHandler'].restart_gameover()
             info['instructionHandler'].start()
         if info["insta"]:
+            console.instasGained += 1
+            console.wins += 1
             info['instructionHandler'].restart_after_freeplay()
             info['instructionHandler'].start()
 
-        sleep(0.5)
+        sleep(0.2)
 
 
 def state_machine():
@@ -114,6 +116,8 @@ def state_machine():
         else:
             info["levelup"] = False
 
+        sleep(0.1)
+
 
 def money_state_machine():
     while True:
@@ -123,6 +127,8 @@ def money_state_machine():
 
         info["currentRound"] = info["statemachine"].currend_round(info["isFreeplay"])
         is_freeplay()
+
+        sleep(0.1)
 
 
 def is_freeplay():
