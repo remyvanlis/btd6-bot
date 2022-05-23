@@ -73,8 +73,13 @@ def instructions():
             console.instasGained += 1
             console.wins += 1
             info['instructionHandler'].restart_after_freeplay()
-            console.instasPerHour = round(60.0 / ((round(console.currentTime - console.startTime) / console.instasGained) / 60), 2)
+            console.instasPerHour = round(60.0 / ((round((console.currentTime - console.startTime) / 1000) / console.instasGained) / 60), 2)
             info['instructionHandler'].start()
+
+        print(console.currentTime)
+        print(console.startTime)
+        print(console.instasGained)
+        print(console.currentTime - console.startTime)
 
         sleep(0.2)
 
