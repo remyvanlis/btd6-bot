@@ -31,7 +31,12 @@ class Console:
         self.__startTime: int = round(time.time() * 1000)
         self.__currentTime: int = round(time.time() * 1000)
         self.__instasGained: int = 0
+        self.__instasPerHour: float = 0.0
 
+
+    @property
+    def startTime(self) -> int:
+        return self.__startTime
 
     @property
     def wins(self) -> int:
@@ -39,6 +44,14 @@ class Console:
 
     @wins.setter
     def wins(self, value: int):
+        self.__wins = value
+
+    @property
+    def instasPerHour(self) -> float:
+        return self.__wins
+
+    @instasPerHour.setter
+    def instasPerHour(self, value: float):
         self.__wins = value
 
     @property
@@ -91,7 +104,7 @@ class Console:
         print(f"[{str(datetime.timedelta(milliseconds=round(time.time() * 1000))).split(' ')[2].split('.')[0]}] Action: {string}")
 
     def show_stats(self):
-        print(f"Wins: {TermColor.GREEN}{self.wins}\n{TermColor.DEFAULT}Losses: {TermColor.RED}{self.loss}\n{TermColor.DEFAULT}Games Played: {TermColor.YELLOW}{self.__wins + self.__loss}\nLevels gained: {TermColor.YELLOW}{self.levels_gained}\nInsta monkeys gained: {TermColor.YELLOW}{self.instasGained}\nRunning for: {TermColor.YELLOW}{(self.currentTime - self.__startTime) / 1000}s\n{self.screen_bar()}")
+        print(f"Wins: {TermColor.GREEN}{self.wins}\n{TermColor.DEFAULT}Losses: {TermColor.RED}{self.loss}\n{TermColor.DEFAULT}Games Played: {TermColor.YELLOW}{self.__wins + self.__loss}\n{TermColor.DEFAULT}Levels gained: {TermColor.BLUE}{self.levels_gained}\n{TermColor.DEFAULT}Insta monkeys gained: {TermColor.PURPLE}{self.instasGained}\n{TermColor.DEFAULT}Insta monkeys per hour: {TermColor.BOLD}{self.instasPerHour}\n{TermColor.DEFAULT}Running for: {TermColor.DEFAULT}{(self.currentTime - self.__startTime) / 1000}s\n{self.screen_bar()}")
 
     @staticmethod
     def game_logs_below():
