@@ -134,7 +134,7 @@ def money_state_machine():
 
 def is_freeplay():
     mode = info["mapsettings"]["rules"]["gamemode"]
-    mode = 40 if mode == "easy" else 60 if mode == "medium" else 80 if mode == "chimp" else 100
+    mode = 40 if mode == "easy" else 60 if mode == "medium" else 80 if mode == "hard" else 100
     info["waves"] = mode if not info["isFreeplay"] else info["mapsettings"]["rules"]["waves"] if mode < info["mapsettings"]["rules"]["waves"] else 0
 
     if info["currentRound"] and not info["isFreeplay"]:
