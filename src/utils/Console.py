@@ -48,11 +48,11 @@ class Console:
 
     @property
     def instasPerHour(self) -> float:
-        return self.instasPerHour
+        return self.__instasPerHour
 
     @instasPerHour.setter
     def instasPerHour(self, value: float):
-        self.instasPerHour = value
+        self.__instasPerHour = value
 
     @property
     def instasGained(self) -> int:
