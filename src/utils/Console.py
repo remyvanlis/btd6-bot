@@ -93,7 +93,7 @@ class Console:
     def welcome_screen(self):
         self.clear_screen()
         print(f"{TermColor.PURPLE}               (                             \n   (    *   ) )\ )  (        (           )  \n ( )\ ` )  /((()/(  )\ )   ( )\       ( /(  \n )((_) ( )(_))/(_))(()/(   )((_)  (   )\()) \n((_)_ (_(_())(_))_  /(_)) ((_)_   )\ (_))/  \n | _ )|_   _| |   \(_) /   | _ ) ((_)| |_   \n | _ \  | |   | |) |/ _ \  | _ \/ _ \|  _|  \n |___/  |_|   |___/ \___/  |___/\___/ \__|  \n")
-        print(f"\n{TermColor.RED}BTD6 Bot. Created by: Remy van Lis\n{self.screen_bar()}")
+        print(f"\n{TermColor.RED}BTD6 Bot. Base by: Team Jazzmoon. Finalized by: Remy van Lis\n{self.screen_bar()}")
 
     def print_string(self, string: str):
         self.print_new_lines()
